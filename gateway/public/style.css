@@ -88,6 +88,16 @@ input:focus {
   margin-bottom: 0.75rem;
 }
 
+.field-spaced {
+  margin-top: 0.75rem;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #2d3a4d;
+  margin: 1rem 0;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

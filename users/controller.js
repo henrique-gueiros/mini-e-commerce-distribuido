@@ -10,7 +10,7 @@ async function register(req, res, next) {
       return res.status(400).json({ error: 'name, email and password are required' });
     }
     const users = readDb();
-    if (users.find(u => u.email === email)) {
+    if (users.find(user => user.email === email)) {
       return res.status(400).json({ error: 'email already in use' });
     }
     const hash = await bcrypt.hash(password, 10);
@@ -36,7 +36,7 @@ async function login(req, res, next) {
       return res.status(400).json({ error: 'email and password are required' });
     }
     const users = readDb();
-    const user = users.find(u => u.email === email);
+    const user = users.find(user => user.email === email);
     if (!user) {
       return res.status(401).json({ error: 'invalid credentials' });
     }
@@ -56,7 +56,7 @@ async function login(req, res, next) {
 }
 
 function getUser(req, res) {
-  const user = readDb().find(u => u.id === req.params.id);
+  const user = readDb().find(user => user.id === req.params.id);
   if (!user) {
     return res.status(404).json({ error: 'user not found' });
   }

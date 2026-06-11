@@ -63,7 +63,7 @@ async function getOrders(req, res, next) {
     if (req.user.userId !== req.params.userId && req.user.role !== 'admin') {
       return res.status(403).json({ error: 'forbidden' });
     }
-    const orders = readDb().filter(o => o.userId === req.params.userId);
+    const orders = readDb().filter(order => order.userId === req.params.userId);
     return res.json(orders);
   } catch (err) {
     next(err);

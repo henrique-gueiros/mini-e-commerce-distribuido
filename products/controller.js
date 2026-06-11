@@ -12,7 +12,7 @@ function listProducts(req, res, next) {
 
 function getProduct(req, res, next) {
   try {
-    const product = readDb().find(p => p.id === req.params.id);
+    const product = readDb().find(product => product.id === req.params.id);
     if (!product) return res.status(404).json({ error: 'product not found' });
     return res.json(product);
   } catch (err) {

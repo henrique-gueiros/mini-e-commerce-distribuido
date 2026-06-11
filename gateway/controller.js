@@ -8,7 +8,7 @@ function getProductsTarget() {
   const targets = [
     { name: 'products', url: process.env.PRODUCTS_URL },
     { name: 'products-replica', url: process.env.PRODUCTS_REPLICA_URL },
-  ].filter(t => t.url);
+  ].filter(target => target.url);
   const target = targets[productRoundRobin % targets.length];
   productRoundRobin++;
   return target;

@@ -7,7 +7,9 @@ const state = {
   productId: localStorage.getItem('productId') || '',
 };
 
-const $ = (id) => document.getElementById(id);
+function getElement(id) {
+  return document.getElementById(id);
+}
 
 function saveState() {
   localStorage.setItem('token', state.token);
@@ -18,22 +20,22 @@ function saveState() {
 }
 
 function renderSession() {
-  $('sessionToken').textContent = state.token ? 'sim' : 'não';
-  $('sessionAdmin').textContent = state.adminToken ? 'sim' : 'não';
-  $('sessionUserId').textContent = state.userId || '—';
-  $('sessionProductId').textContent = state.productId || '—';
-  $('tokenInput').value = state.token;
-  $('adminTokenInput').value = state.adminToken;
-  $('userIdInput').value = state.userId;
-  $('productIdInput').value = state.productId;
+  getElement('sessionToken').textContent = state.token ? 'sim' : 'não';
+  getElement('sessionAdmin').textContent = state.adminToken ? 'sim' : 'não';
+  getElement('sessionUserId').textContent = state.userId || '—';
+  getElement('sessionProductId').textContent = state.productId || '—';
+  getElement('tokenInput').value = state.token;
+  getElement('adminTokenInput').value = state.adminToken;
+  getElement('userIdInput').value = state.userId;
+  getElement('productIdInput').value = state.productId;
 }
 
 function showResponse(status, data, ms) {
-  const codeEl = $('statusCode');
+  const codeEl = getElement('statusCode');
   codeEl.textContent = status;
   codeEl.className = 'status-code ' + (status >= 200 && status < 300 ? 'ok' : 'err');
-  $('responseTime').textContent = ms + ' ms';
-  $('responseBody').textContent =
+  getElement('responseTime').textContent = ms + ' ms';
+  getElement('responseBody').textContent =
     typeof data === 'string' ? data : JSON.stringify(data, null, 2);
 }
 
@@ -43,18 +45,22 @@ async function request(method, path, body, token) {
 
   const start = performance.now();
   let res, data;
+
   try {
     res = await fetch(API + path, {
       method,
       headers,
       body: body != null ? JSON.stringify(body) : undefined,
     });
+
     const text = await res.text();
+
     try {
       data = text ? JSON.parse(text) : {};
     } catch {
       data = text;
     }
+
   } catch (err) {
     showResponse(0, { error: err.message });
     return null;
@@ -65,8 +71,9 @@ async function request(method, path, body, token) {
 }
 
 async function checkHealth() {
-  const badge = $('healthBadge');
+  const badge = getElement('healthBadge');
   const result = await request('GET', '/health');
+
   if (result?.status === 200) {
     badge.textContent = 'Gateway: online';
     badge.className = 'badge ok';
@@ -77,15 +84,15 @@ async function checkHealth() {
 }
 
 function bind(id, handler) {
-  $(id).addEventListener('click', handler);
+  getElement(id).addEventListener('click', handler);
 }
 
 function val(id) {
-  return $(id).value.trim();
+  return getElement(id).value.trim();
 }
 
 function num(id) {
-  return Number($(id).value);
+  return Number(getElement(id).value);
 }
 
 bind('btnHealth', checkHealth);
@@ -97,6 +104,7 @@ bind('btnRegisterUser', async () => {
     password: val('regPassword'),
     role: 'user',
   });
+
   if (result?.status === 201 && result.data.id) {
     state.userId = result.data.id;
     saveState();
@@ -117,6 +125,7 @@ bind('btnLoginUser', async () => {
     email: val('loginEmail'),
     password: val('loginPassword'),
   });
+
   if (result?.status === 200 && result.data.token) {
     state.token = result.data.token;
     saveState();
@@ -128,6 +137,7 @@ bind('btnLoginAdmin', async () => {
     email: val('adminLoginEmail'),
     password: val('adminLoginPassword'),
   });
+
   if (result?.status === 200 && result.data.token) {
     state.adminToken = result.data.token;
     saveState();
@@ -144,6 +154,7 @@ bind('btnListProducts', () => request('GET', '/products'));
 bind('btnGetProduct', async () => {
   const id = val('productIdInput') || state.productId;
   const result = await request('GET', '/products/' + id);
+
   if (result?.status === 200 && result.data.id) {
     state.productId = result.data.id;
     saveState();
@@ -158,6 +169,7 @@ bind('btnCreateProduct', async () => {
     { name: val('prodName'), price: num('prodPrice'), stock: num('prodStock') },
     token
   );
+
   if (result?.status === 201 && result.data.id) {
     state.productId = result.data.id;
     saveState();
