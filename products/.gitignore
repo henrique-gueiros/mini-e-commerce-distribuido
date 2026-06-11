@@ -10,3 +10,5 @@
 /test-results
 /test-results-*/
 /test-results-*/
+db-primary.json
+db-replica.json

@@ -10,3 +10,7 @@
 /test-results
 /test-results-*/
 /test-results-*/
+users/db.json
+orders/db.json
+products/db-primary.json
+products/db-replica.json

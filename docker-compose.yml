@@ -5,6 +5,8 @@ services:
     build: ./users
     ports:
       - "5001:5001"
+    volumes:
+      - ./users/db.json:/app/db.json
     environment:
       PORT: 5001
       JWT_SECRET: supersecret
@@ -13,6 +15,8 @@ services:
     build: ./products
     ports:
       - "5002:5002"
+    volumes:
+      - ./products/db-primary.json:/app/db-primary.json
     environment:
       PORT: 5002
       JWT_SECRET: supersecret
@@ -24,6 +28,8 @@ services:
     build: ./products
     ports:
       - "5012:5012"
+    volumes:
+      - ./products/db-replica.json:/app/db-replica.json
     environment:
       PORT: 5012
       JWT_SECRET: supersecret
@@ -34,6 +40,8 @@ services:
     build: ./orders
     ports:
       - "5003:5003"
+    volumes:
+      - ./orders/db.json:/app/db.json
     environment:
       PORT: 5003
       JWT_SECRET: supersecret
@@ -46,9 +54,9 @@ services:
   gateway:
     build: ./gateway
     ports:
-      - "5000:5000"
+      - "5004:5004"
     environment:
-      PORT: 5000
+      PORT: 5004
       JWT_SECRET: supersecret
       USERS_URL: http://users:5001
       PRODUCTS_URL: http://products-primary:5002

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini E-commerce — Test UI</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>Mini E-commerce — Painel de Testes</h1>
+    <p>Interface simples para testar a API via Gateway</p>
+  </header>
+
+  <div class="layout">
+    <main>
+      <section class="panel">
+        <h2>Status</h2>
+        <div class="status-bar">
+          <span id="healthBadge" class="badge warn">Gateway: verificando…</span>
+          <span class="badge">Token user: <strong id="sessionToken">—</strong></span>
+          <span class="badge">Token admin: <strong id="sessionAdmin">—</strong></span>
+          <span class="badge">User ID: <strong id="sessionUserId">—</strong></span>
+          <span class="badge">Product ID: <strong id="sessionProductId">—</strong></span>
+        </div>
+        <div class="actions">
+          <button id="btnHealth" type="button">GET /health</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Usuários</h2>
+        <div class="grid-2">
+          <div>
+            <p class="hint">Registrar usuário comum</p>
+            <div class="field"><label>Nome</label><input id="regName" value="João"></div>
+            <div class="field"><label>Email</label><input id="regEmail" value="joao@email.com"></div>
+            <div class="field"><label>Senha</label><input id="regPassword" type="password" value="123456"></div>
+            <button id="btnRegisterUser" type="button">POST /users/register (user)</button>
+          </div>
+          <div>
+            <p class="hint">Registrar admin</p>
+            <div class="field"><label>Nome</label><input id="adminName" value="Admin"></div>
+            <div class="field"><label>Email</label><input id="adminEmail" value="admin@email.com"></div>
+            <div class="field"><label>Senha</label><input id="adminPassword" type="password" value="admin123"></div>
+            <button id="btnRegisterAdmin" type="button">POST /users/register (admin)</button>
+          </div>
+        </div>
+        <hr style="border-color:#2d3a4d;margin:1rem 0">
+        <div class="grid-2">
+          <div>
+            <p class="hint">Login usuário</p>
+            <div class="field"><label>Email</label><input id="loginEmail" value="joao@email.com"></div>
+            <div class="field"><label>Senha</label><input id="loginPassword" type="password" value="123456"></div>
+            <button id="btnLoginUser" type="button">POST /users/login</button>
+          </div>
+          <div>
+            <p class="hint">Login admin</p>
+            <div class="field"><label>Email</label><input id="adminLoginEmail" value="admin@email.com"></div>
+            <div class="field"><label>Senha</label><input id="adminLoginPassword" type="password" value="admin123"></div>
+            <button id="btnLoginAdmin" type="button">POST /users/login (admin)</button>
+          </div>
+        </div>
+        <div class="field" style="margin-top:0.75rem">
+          <label>User ID</label>
+          <input id="userIdInput" placeholder="preenchido automaticamente no register">
+        </div>
+        <button id="btnGetUser" type="button">GET /users/:id</button>
+      </section>
+
+      <section class="panel">
+        <h2>Produtos</h2>
+        <div class="actions">
+          <button id="btnListProducts" type="button">GET /products</button>
+        </div>
+        <div class="field" style="margin-top:0.75rem">
+          <label>Product ID</label>
+          <input id="productIdInput" placeholder="preenchido ao criar produto">
+        </div>
+        <button id="btnGetProduct" type="button" class="secondary">GET /products/:id</button>
+        <hr style="border-color:#2d3a4d;margin:1rem 0">
+        <p class="hint">Criar produto (requer token admin)</p>
+        <div class="grid-2">
+          <div class="field"><label>Nome</label><input id="prodName" value="Notebook"></div>
+          <div class="field"><label>Preço</label><input id="prodPrice" type="number" value="3500"></div>
+          <div class="field"><label>Estoque</label><input id="prodStock" type="number" value="10"></div>
+        </div>
+        <button id="btnCreateProduct" type="button">POST /products</button>
+      </section>
+
+      <section class="panel">
+        <h2>Pedidos</h2>
+        <div class="grid-2">
+          <div class="field"><label>User ID</label><input id="orderUserId" placeholder="usa sessão se vazio"></div>
+          <div class="field"><label>Product ID</label><input id="orderProductId" placeholder="usa sessão se vazio"></div>
+          <div class="field"><label>Quantidade</label><input id="orderQty" type="number" value="2"></div>
+        </div>
+        <div class="actions">
+          <button id="btnCreateOrder" type="button">POST /orders</button>
+          <button id="btnListOrders" type="button" class="secondary">GET /orders/:userId</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Sessão manual</h2>
+        <p class="hint">Tokens e IDs são salvos no localStorage ao fazer login/register.</p>
+        <div class="field"><label>Token user</label><input id="tokenInput" placeholder="Bearer token"></div>
+        <div class="field"><label>Token admin</label><input id="adminTokenInput" placeholder="Bearer token admin"></div>
+        <div class="actions">
+          <button id="btnSaveSession" type="button" class="secondary">Salvar sessão</button>
+          <button id="btnClearSession" type="button" class="danger">Limpar sessão</button>
+        </div>
+      </section>
+    </main>
+
+    <aside class="response-panel">
+      <section class="panel">
+        <h2>Resposta</h2>
+        <div class="response-meta">
+          <span>Status: <span id="statusCode" class="status-code">—</span></span>
+          <span id="responseTime">—</span>
+        </div>
+        <pre id="responseBody">Clique em um botão para ver a resposta da API.</pre>
+      </aside>
+    </aside>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
